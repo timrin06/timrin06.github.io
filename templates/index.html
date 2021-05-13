@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+    <meta charset="UTF-8">
+    <title>ЧАЙ ВДВОЕМ</title>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+    <script src="/static/js/script.js" type="text/javascript"></script>
+</head>
+
+<body>
+    <div id="reg">
+        <img class="close" src="/static/img/btn/close.png" onclick="regVis(0)">
+        <form id="register" action="/registrate" method="POST">
+            <h1>Введите свой E-MAIL</h1>
+            <input type="email" name="email" placeholder="ВВЕДИТЕ СВОЙ E-MAIL" oninput ="testReg()">
+            <h1>Введите пароль (минимум 8 символов)</h1>
+            <input type="password" minlength="1" maxlength="16" placeholder="ВВЕДИТЕ ПАРОЛЬ (НОВЫЙ)" onchange="testReg()">
+            <h1>Введите пароль (еще раз)</h1>
+            <input type="password" minlength="1" maxlength="16" name="password" placeholder="ВВЕДИТЕ ПАРОЛЬ ЕЩЁ РАЗ" oninput="testReg()">
+            <input type="submit" disabled="1">
+            <h2></h2>
+        </form>
+        {% if user %}
+            <div id="accInf">
+                <img src="/static/img/btn/icon.png">
+                <h1>{{ user.email }}</h1>
+                <div id="mailSend">
+                    <input type="checkbox"><p>Подписаться на рассылку</p>
+                </div>
+                <a id="bag" onclick='bagVis(1)'>КОРЗИНА</a>
+            </div>
+            <div id="bagModel">
+                <div id="buys"></div>
+                <div id="options">
+                    <button></button>
+                    <button></button>
+                    <button></button>
+                </div>
+            </div>
+        {% else %}
+            <form style="display: grid;" method="POST" action="/login" id="inp">
+                <input type="email" placeholder="ЭЛЕКТРОННАЯ ПОЧТА" name="email">
+                <input type="password" placeholder="ПАРОЛЬ" name="password">
+                <input type="submit" onclick="reg()" value="ВОЙТИ">
+                <div id="unenter">Неправильный логин или пароль</div>
+                <a onclick="newAcc(1)">Нет аккаунта?Создайте!</a>
+            </form>
+        {% endif %}
+    </div>
+
+    <div id="cardInf"></div>
+
+    <div id="header">
+        <h1><a>ЧАЙ ВДВОЕМ</a></h1><img src="/static/img/btn/max.png" id="max" onclick="mUlVis()">
+        <ul>
+            <li><a href="#aboutUs" onclick="changeLi(1)">О НАС</a></li>
+            <li><a href="#cards" onclick="changeLi(2)">ТОВАРЫ</a></li>
+            <li><a href="#contact" onclick="changeLi(3)">СВЯЗЬ</a></li>
+        </ul>
+    </div>
+
+    <div id="aboutUs">
+        <div id="txt">Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus nobis corporis
+            reprehenderit quae deleniti incidunt voluptatem pariatur quidem quam optio, ipsa tempore asperiores impedit
+            voluptatibus commodi inventore tempora dolores aliquam
+            quaerat natus et dignissimos. Aliquam earum, sit quia laudantium vel officia. Animi optio architecto quod
+            est odit! Natus, fugit animi provident iure repudiandae accusamus deleniti sit consequuntur! In voluptatum
+            mollitia culpa inventore sequi,
+            consequuntur reiciendis, autem id officiis eos nostrum suscipit numquam quia quas totam sit deserunt.
+            consequuntur reiciendis.autem id officiis eos nostrum suscipit numquam quia quas totam sit deserunt.
+            consequuntur.
+        </div>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/fAk8JctBIIs" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
+    </div>
+
+    <div id="cards">
+        {% for el in cards %}
+            {% if el.hit %}
+                <div class="card hit" onclick="cardInf(1, {{ el.id }})">
+                    <div class='hitIcon'>ХИТ</div>
+                    <img src="/static/img/cards/{{ el.img }}">
+                    <h1>{{ el.header }}</h1>
+                    <p style="display: none;">{{ el.text }}</p>
+                    <h2 style="display: none;">{{ el.price }}руб.</h2>
+                </div>
+            {% else %}
+                <div class="card" onclick="cardInf(1, {{ el.id }})">
+                    <div style="display: none;"></div>
+                    <img src="/static/img/cards/{{ el.img }}">
+                    <h1>{{ el.header }}</h1>
+                    <p style="display: none;">{{ el.text }}</p>
+                    <h2 style="display: none;">{{ el.price }}руб.</h2>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <div id="contact">
+        <ul>
+            <li>OUR@MAIL.COM</li>
+            <li>+7-800-555-35-55</li>
+            <li id="icons">
+                <img src="/static/img/btn/VK.png">
+                <img src="/static/img/btn/Inst.png">
+                <img src="/static/img/btn/twitter.png">
+            </li>
+        </ul>
+    </div>
+
+    <img onload="changeLi(1)" id="acc" onclick="regVis(1)" src="{{ url_for('static', filename='img/btn/icon.png') }}">
+</body>
+
+</html>
